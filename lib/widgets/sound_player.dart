@@ -49,6 +49,12 @@ class _SoundPlayerWidgetState extends State<SoundPlayerWidget> {
     setState(() {});
   }
 
+  void changeVolume(Set<double> values) {
+    volumeEx = values.first.toDouble();
+    assetsAudioPlayer.setVolume(volumeEx);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -228,12 +234,6 @@ class _SoundPlayerWidgetState extends State<SoundPlayerWidget> {
         ]),
       ),
     );
-  }
-
-  void changeVolume(Set<double> values) {
-    volumeEx = values.first.toDouble();
-    assetsAudioPlayer.setVolume(volumeEx);
-    setState(() {});
   }
 
   Widget get getBtnWidget => assetsAudioPlayer.builderIsPlaying(
