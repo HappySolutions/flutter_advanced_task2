@@ -12,7 +12,7 @@ class _HomePageState extends State<HomePage> {
   final assetsAudioPlayer = AssetsAudioPlayer();
   int valueEx = 0;
   double volumeEx = 1.0;
-  double playSpeed = 1.0;
+  double playSpeedEx = 1.0;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     );
     assetsAudioPlayer.playSpeed.listen((onData) {
       print('=========>$onData');
-      playSpeed = onData;
+      playSpeedEx = onData;
     });
     assetsAudioPlayer.volume.listen((event) {
       print('=========>$event');
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Center(child: Text('Sound Player')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -177,9 +177,9 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     SegmentedButton(
                                       onSelectionChanged: (values) {
-                                        playSpeed = values.first.toDouble();
+                                        playSpeedEx = values.first.toDouble();
                                         assetsAudioPlayer
-                                            .setPlaySpeed(playSpeed);
+                                            .setPlaySpeed(playSpeedEx);
                                         setState(() {});
                                       },
                                       segments: const [
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                                           icon: Text('4X'),
                                         ),
                                       ],
-                                      selected: {playSpeed},
+                                      selected: {playSpeedEx},
                                     ),
                                   ],
                                 ),
@@ -269,6 +269,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
+
   String convertSeconds(int seconds) {
     String minutes = (seconds ~/ 60).toString();
     String secondsStr = (seconds % 60).toString();
