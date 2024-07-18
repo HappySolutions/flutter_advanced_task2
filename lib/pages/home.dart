@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:flutter_application_1/pages/playlist_page.dart';
 import 'package:flutter_application_1/widgets/sound_player.dart';
 
 class HomePage extends StatefulWidget {
-  final Playlist playlist;
+  final Audio audioFile;
 
-  const HomePage({required this.playlist, super.key});
+  const HomePage({required this.audioFile, super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -31,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         // ],
       ),
       body: SoundPlayerWidget(
-        playlist: widget.playlist,
+        audioFile: widget.audioFile,
       ),
     );
   }

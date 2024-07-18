@@ -10,22 +10,29 @@ class PlaylistPage extends StatefulWidget {
 }
 
 class _PlaylistPageState extends State<PlaylistPage> {
-  final Playlist playlistEx = Playlist(
-    audios: [
-      Audio(
-        "assets/sampl.mp3",
-        metas: Metas(title: 'First Song', artist: 'Artist 1'),
-      ),
-      Audio(
-        "assets/sampl1.mp3",
-        metas: Metas(title: 'Second Song', artist: 'Artist 2'),
-      ),
-      Audio(
-        "assets/sampl2.mp3",
-        metas: Metas(title: 'Third Song', artist: 'Artist 3'),
-      ),
-    ],
-  );
+  Playlist? playlistEx = Playlist();
+
+  @override
+  void initState() {
+    playlistEx = Playlist(
+      audios: [
+        Audio(
+          "assets/sampl.mp3",
+          metas: Metas(title: 'First Song', artist: 'Artist 1'),
+        ),
+        Audio(
+          "assets/sampl1.mp3",
+          metas: Metas(title: 'Second Song', artist: 'Artist 2'),
+        ),
+        Audio(
+          "assets/sampl2.mp3",
+          metas: Metas(title: 'Third Song', artist: 'Artist 3'),
+        ),
+      ],
+    );
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +40,22 @@ class _PlaylistPageState extends State<PlaylistPage> {
       appBar: AppBar(
         title: const Text('PlayList Page'),
       ),
-      body: ListView(
-        children: [
-          for (var audio in playlistEx.audios)
-            SongWidget(
-              audio: audio,
+      body: playlistEx!.audios.isEmpty
+          ? const CircularProgressIndicator()
+          : Column(
+              children: [
+                ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: [
+                    for (var audio in playlistEx!.audios)
+                      SongWidget(
+                        audio: audio,
+                      ),
+                  ],
+                ),
+              ],
             ),
-        ],
-      ),
     );
   }
 }

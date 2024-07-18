@@ -2,8 +2,8 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 class SoundPlayerWidget extends StatefulWidget {
-  final Playlist playlist;
-  const SoundPlayerWidget({required this.playlist, super.key});
+  final Audio audioFile;
+  const SoundPlayerWidget({required this.audioFile, super.key});
 
   @override
   State<SoundPlayerWidget> createState() => _SoundPlayerWidgetState();
@@ -25,16 +25,14 @@ class _SoundPlayerWidgetState extends State<SoundPlayerWidget> {
     await assetsAudioPlayer.open(
       volume:
           volumeEx, //Usecase>>> only define if you want each song starts with the initial volume value even if you changed it during the prev song
-      widget.playlist,
+      widget.audioFile,
       autoStart: false,
       loopMode: LoopMode.playlist,
     );
     assetsAudioPlayer.playSpeed.listen((event) {
-      // print('=========>$onData');
       playSpeedEx = event;
     });
     assetsAudioPlayer.volume.listen((event) {
-      // print('=========>$event');
       volumeEx = event;
     });
 

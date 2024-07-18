@@ -12,11 +12,9 @@ class SongWidget extends StatefulWidget {
 
 class _SongWidgetState extends State<SongWidget> {
   final assetsAudioPlayer = AssetsAudioPlayer();
-  final Playlist newPlaylist = Playlist();
   @override
   void initState() {
     assetsAudioPlayer.open(widget.audio, autoStart: false);
-    newPlaylist.add(widget.audio);
     super.initState();
   }
 
@@ -44,8 +42,12 @@ class _SongWidgetState extends State<SongWidget> {
       title: Text(widget.audio.metas.title ?? 'No Title'),
       subtitle: Text(widget.audio.metas.artist ?? 'No Artist'),
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => HomePage(playlist: newPlaylist)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => HomePage(
+                      audioFile: widget.audio,
+                    )));
       },
     );
   }
