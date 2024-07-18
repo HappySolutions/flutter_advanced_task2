@@ -57,181 +57,184 @@ class _SoundPlayerWidgetState extends State<SoundPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Column(children: [
-          Container(
-            height: 600,
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.blue,
-            ),
-            child: Center(
-              child: StreamBuilder(
-                  stream: assetsAudioPlayer.realtimePlayingInfos,
-                  builder: (context, snapshots) {
-                    if (snapshots.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            assetsAudioPlayer.getCurrentAudioTitle == ''
-                                ? 'Please play your Songs'
-                                : assetsAudioPlayer.getCurrentAudioTitle,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                onPressed: snapshots.data?.current?.index == 0
-                                    ? null
-                                    : () {
-                                        assetsAudioPlayer.previous();
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Column(children: [
+            Container(
+              height: 600,
+              width: 400,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.blue,
+              ),
+              child: Center(
+                child: StreamBuilder(
+                    stream: assetsAudioPlayer.realtimePlayingInfos,
+                    builder: (context, snapshots) {
+                      if (snapshots.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              assetsAudioPlayer.getCurrentAudioTitle == ''
+                                  ? 'Please play your Songs'
+                                  : assetsAudioPlayer.getCurrentAudioTitle,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30),
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  onPressed: snapshots.data?.current?.index == 0
+                                      ? null
+                                      : () {
+                                          assetsAudioPlayer.previous();
+                                        },
+                                  icon: const Icon(Icons.skip_previous),
+                                ),
+                                getBtnWidget,
+                                IconButton(
+                                  onPressed: snapshots.data?.current?.index ==
+                                          (assetsAudioPlayer.playlist?.audios
+                                                      .length ??
+                                                  0) -
+                                              1
+                                      ? null
+                                      : () {
+                                          assetsAudioPlayer.next();
+                                        },
+                                  icon: const Icon(Icons.skip_next),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Column(
+                              children: [
+                                const Text(
+                                  'Volume',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 17),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SegmentedButton(
+                                      onSelectionChanged: (values) {
+                                        changeVolume(values);
                                       },
-                                icon: const Icon(Icons.skip_previous),
-                              ),
-                              getBtnWidget,
-                              IconButton(
-                                onPressed: snapshots.data?.current?.index ==
-                                        (assetsAudioPlayer
-                                                    .playlist?.audios.length ??
-                                                0) -
-                                            1
-                                    ? null
-                                    : () {
-                                        assetsAudioPlayer.next();
+                                      segments: const [
+                                        ButtonSegment(
+                                          value: 1.0,
+                                          icon: Icon(Icons.volume_up),
+                                        ),
+                                        ButtonSegment(
+                                          value: 0.5,
+                                          icon: Icon(Icons.volume_down),
+                                        ),
+                                        ButtonSegment(
+                                          value: 0.0,
+                                          icon: Icon(Icons.volume_mute),
+                                        ),
+                                      ],
+                                      selected: {volumeEx},
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 25),
+                                const Text(
+                                  'Speed',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 17),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SegmentedButton(
+                                      onSelectionChanged: (values) {
+                                        changePlaySpeed(values);
                                       },
-                                icon: const Icon(Icons.skip_next),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Column(
-                            children: [
-                              const Text(
-                                'Volume',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SegmentedButton(
-                                    onSelectionChanged: (values) {
-                                      changeVolume(values);
-                                    },
-                                    segments: const [
-                                      ButtonSegment(
-                                        value: 1.0,
-                                        icon: Icon(Icons.volume_up),
-                                      ),
-                                      ButtonSegment(
-                                        value: 0.5,
-                                        icon: Icon(Icons.volume_down),
-                                      ),
-                                      ButtonSegment(
-                                        value: 0.0,
-                                        icon: Icon(Icons.volume_mute),
-                                      ),
-                                    ],
-                                    selected: {volumeEx},
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              const Text(
-                                'Speed',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SegmentedButton(
-                                    onSelectionChanged: (values) {
-                                      changePlaySpeed(values);
-                                    },
-                                    segments: const [
-                                      ButtonSegment(
-                                        value: 1.0,
-                                        icon: Text('1X'),
-                                      ),
-                                      ButtonSegment(
-                                        value: 4.0,
-                                        icon: Text('2X'),
-                                      ),
-                                      ButtonSegment(
-                                        value: 8.0,
-                                        icon: Text('3X'),
-                                      ),
-                                      ButtonSegment(
-                                        value: 16.0,
-                                        icon: Text('4X'),
-                                      ),
-                                    ],
-                                    selected: {playSpeedEx},
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Slider(
-                            value: valueEx.toDouble(),
-                            min: 0,
-                            max:
-                                snapshots.data?.duration.inSeconds.toDouble() ??
-                                    0.0,
-                            onChanged: (value) async {
-                              // await assetsAudioPlayer.seek(
-                              //   Duration(seconds: value.toInt()),
-                              // );
-                              setState(() {
-                                valueEx = value.toInt();
-                              });
-                            },
-                            onChangeEnd: (value) async {
-                              await assetsAudioPlayer.seek(
-                                Duration(seconds: value.toInt()),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Text(
-                            '${convertSeconds(valueEx)} / ${convertSeconds(snapshots.data?.duration.inSeconds ?? 0)}',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-          )
-        ]),
+                                      segments: const [
+                                        ButtonSegment(
+                                          value: 1.0,
+                                          icon: Text('1X'),
+                                        ),
+                                        ButtonSegment(
+                                          value: 4.0,
+                                          icon: Text('2X'),
+                                        ),
+                                        ButtonSegment(
+                                          value: 8.0,
+                                          icon: Text('3X'),
+                                        ),
+                                        ButtonSegment(
+                                          value: 16.0,
+                                          icon: Text('4X'),
+                                        ),
+                                      ],
+                                      selected: {playSpeedEx},
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Slider(
+                              value: valueEx.toDouble(),
+                              min: 0,
+                              max: snapshots.data?.duration.inSeconds
+                                      .toDouble() ??
+                                  0.0,
+                              onChanged: (value) async {
+                                // await assetsAudioPlayer.seek(
+                                //   Duration(seconds: value.toInt()),
+                                // );
+                                setState(() {
+                                  valueEx = value.toInt();
+                                });
+                              },
+                              onChangeEnd: (value) async {
+                                await assetsAudioPlayer.seek(
+                                  Duration(seconds: value.toInt()),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Text(
+                              '${convertSeconds(valueEx)} / ${convertSeconds(snapshots.data?.duration.inSeconds ?? 0)}',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/home.dart';
 
 class SongWidget extends StatefulWidget {
   final Audio audio;
@@ -11,9 +12,11 @@ class SongWidget extends StatefulWidget {
 
 class _SongWidgetState extends State<SongWidget> {
   final assetsAudioPlayer = AssetsAudioPlayer();
+  final Playlist newPlaylist = Playlist();
   @override
   void initState() {
     assetsAudioPlayer.open(widget.audio, autoStart: false);
+    newPlaylist.add(widget.audio);
     super.initState();
   }
 
@@ -40,7 +43,10 @@ class _SongWidgetState extends State<SongWidget> {
       ),
       title: Text(widget.audio.metas.title ?? 'No Title'),
       subtitle: Text(widget.audio.metas.artist ?? 'No Artist'),
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => HomePage(playlist: newPlaylist)));
+      },
     );
   }
 
